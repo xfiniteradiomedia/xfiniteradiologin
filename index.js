@@ -1,26 +1,44 @@
-// For Firebase integration, you'll need to initialize Firebase and set up the authentication logic.
+// Initialize Firebase with your own configuration
+const firebaseConfig = {
+  apiKey: "AIzaSyCEwzgpAAKTJHriSRiBYqZIYuG04WMtAC0",
+  authDomain: "xfiniteradio-a66c9.firebaseapp.com",
+  databaseURL: "https://xfiniteradio-a66c9-default-rtdb.firebaseio.com",
+  projectId: "xfiniteradio-a66c9",
+  storageBucket: "xfiniteradio-a66c9.appspot.com",
+  messagingSenderId: "891913288263",
+  appId: "1:891913288263:web:d049046f53a8300f634f62",
+  measurementId: "G-SSJVY3WZYF"
+};
 
-document.addEventListener('DOMContentLoaded', () => {
-  const loginForm = document.getElementById('login-form');
-  const clearBtn = document.getElementById('clear-btn');
-  const submitBtn = document.getElementById('submit-btn');
-  const googleLoginBtn = document.getElementById('google-login-btn');
+// Initialize Firebase
+firebase.initializeApp(firebaseConfig);
 
-  // Clear button event listener
-  clearBtn.addEventListener('click', () => {
-    document.getElementById('email').value = '';
-    document.getElementById('password').value = '';
-  });
+// Function to handle form submission
+async function handleLogin(event) {
+  event.preventDefault(); // Prevent the default form submission behavior
 
-  // Submit button event listener (for form submission logic)
-  submitBtn.addEventListener('click', () => {
-    // Implement form submission logic (e.g., Firebase login with email/password)
-    // You'll need to handle errors and redirect to the dashboard on successful login.
-  });
+  // Get user input values
+  const email = document.getElementById('email').value;
+  const password = document.getElementById('password').value;
 
-  // Google login button event listener (for Google login integration)
-  googleLoginBtn.addEventListener('click', () => {
-    // Implement Google login integration (e.g., Firebase Google authentication)
-    // You'll need to handle errors and redirect to the dashboard on successful login.
-  });
-});
+  try {
+    // Sign in with email and password using Firebase
+    await firebase.auth().signInWithEmailAndPassword(email, password);
+
+    // Redirect to the dashboard page if login is successful
+    window.location.href = 'dashboard.html';
+  } catch (error) {
+    // Handle login errors
+    console.error(error);
+    alert('Invalid credentials. Please try again.');
+  }
+}
+
+// Function to handle the "Clear" button click
+function handleClear() {
+  document.getElementById('login-form').reset();
+}
+
+// Event listeners
+document.getElementById('login-form').addEventListener('submit', handleLogin);
+document.getElementById('clear-btn').addEventListener('click', handleClear);
